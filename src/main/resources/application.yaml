@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: weatherAI
+
+  ai:
+    ollama:
+      chat:
+        model: deepseek-r1:8b
+
+
+weather:
+  api:
+    key: ${WEATHER_API_KEY}
