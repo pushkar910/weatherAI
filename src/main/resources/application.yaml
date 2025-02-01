@@ -5,9 +5,13 @@ spring:
   ai:
     ollama:
       chat:
-        model: deepseek-r1:8b
+        model: llama3.2:3b
 
 
 weather:
   api:
     key: ${WEATHER_API_KEY}
+
+job:
+  api:
+    key: ${JOB_API_KEY}
