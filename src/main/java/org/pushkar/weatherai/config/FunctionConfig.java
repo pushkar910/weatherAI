@@ -1,5 +1,7 @@
 package org.pushkar.weatherai.config;
 
+import org.pushkar.weatherai.outbound.serviceclient.weather.dto.WeatherRequestDTO;
+import org.pushkar.weatherai.outbound.serviceclient.weather.dto.WeatherResponseDTO;
 import org.pushkar.weatherai.service.JobsService;
 import org.pushkar.weatherai.service.WeatherService;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +16,7 @@ public class FunctionConfig {
 
     @Bean
     @Description("Get the current weather conditions for the given city.")
-    public Function<WeatherService.Request,WeatherService.Response> currentWeatherFunction() {
+    public Function<WeatherRequestDTO, WeatherResponseDTO> currentWeatherFunction() {
         return new WeatherService();
     }
 

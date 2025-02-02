@@ -2,6 +2,7 @@ package org.pushkar.weatherai.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 @Service
 public class AIChatService {
@@ -15,10 +16,10 @@ public class AIChatService {
                 .build();
     }
 
-    public String getAIResponse(String message) {
+    public Flux<String> getAIResponse(String message) {
         return chatClient.prompt()
                 .user(message)
-                .call()
+                .stream()
                 .content();
     }
 }

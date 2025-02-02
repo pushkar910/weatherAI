@@ -1,23 +1,12 @@
 package org.pushkar.weatherai.outbound.serviceclient.weather.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class LocationDTO implements Serializable {
-
-    private String name;
-    private String region;
-    private String country;
-    private double lat;
-    private double lon;
-    @JsonProperty("tz_id")
-    private String tzId;
-    @JsonProperty("localtime_epoch")
-    private long localtimeEpoch;
-    private String localtime;
-}
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record LocationDTO(
+        String name,
+        String region,
+        String country,
+        double lat,
+        double lon) implements Serializable { }
