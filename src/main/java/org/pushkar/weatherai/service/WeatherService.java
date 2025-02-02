@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 import java.util.function.Function;
 
@@ -19,7 +20,11 @@ public class WeatherService implements Function<WeatherRequestDTO, WeatherRespon
 
     @Override
     public WeatherResponseDTO apply(WeatherRequestDTO weatherRequest) {
-        return weatherClient.getWeather(weatherRequest.city());
+        WeatherResponseDTO res = weatherClient.getWeather(weatherRequest.city());
+        if (null != res){
+            return res;
+        }
+        throw new RestClientException("Weather data not found for city: " + weatherRequest.city());
     }
 
 }

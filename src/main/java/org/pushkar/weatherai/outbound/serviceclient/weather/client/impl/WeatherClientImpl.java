@@ -1,5 +1,7 @@
 package org.pushkar.weatherai.outbound.serviceclient.weather.client.impl;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.pushkar.weatherai.outbound.serviceclient.weather.client.WeatherClient;
 import org.pushkar.weatherai.outbound.serviceclient.weather.dto.WeatherResponseDTO;
 import org.pushkar.weatherai.util.HttpHelper;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 
 @Component
+@Slf4j
 public class WeatherClientImpl implements WeatherClient {
 
     @Value("${weather.api.key}")
@@ -28,15 +31,20 @@ public class WeatherClientImpl implements WeatherClient {
 
     @Override
     public WeatherResponseDTO getWeather(String cityName) {
-        String url = WEATHER_API_URL.replace("${CITY_NAME}", cityName);
-        url = url.replace("${API_KEY}", API_KEY);
-        ResponseEntity<Map<String, Object>> response = httpHelper.executeGet(url, null, new LinkedHashMap<String, Object>());
-        if (response != null) {
-            Map<String, Object> metadata = response.getBody();
-            if (null != metadata && response.getStatusCode() == HttpStatus.OK) {
-                WeatherResponseDTO weatherResponseDTO = objectMapper.convertValue(metadata, WeatherResponseDTO.class);
-                return weatherResponseDTO;
+        try {
+            String url = WEATHER_API_URL.replace("${CITY_NAME}", cityName);
+            url = url.replace("${API_KEY}", API_KEY);
+            ResponseEntity<Map<String, Object>> response = httpHelper.executeGet(url, null, new LinkedHashMap<String, Object>());
+            if (response != null) {
+                Map<String, Object> metadata = response.getBody();
+                if (null != metadata && response.getStatusCode() == HttpStatus.OK) {
+                    WeatherResponseDTO weatherResponseDTO = objectMapper.convertValue(metadata, WeatherResponseDTO.class);
+                    log.info("City: {} and Weather response: {}",cityName, weatherResponseDTO);
+                    return weatherResponseDTO;
+                }
             }
+        } catch (Exception e) {
+            log.error("Error while fetching weather for city: {}", cityName, e);
         }
         return null;
     }
