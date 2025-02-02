@@ -11,7 +11,7 @@ import java.time.Duration;
 @Slf4j
 public class AIChatService {
 
-    private ChatClient chatClient;
+    private final ChatClient chatClient;
 
     AIChatService(ChatClient.Builder builder){
         this.chatClient = builder
